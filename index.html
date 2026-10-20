@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#09090c">
+  <title>CowShell 2.0 — Your Progress System</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" data-page="dashboard" aria-label="CowShell home">
+        <span class="brand-mark">C</span>
+        <span><strong>CowShell<span class="brand-version">.2</span></strong><small>YOUR PROGRESS SYSTEM</small></span>
+      </a>
+      <div class="nav-label">WORKSPACE</div>
+      <nav class="side-nav" aria-label="Main navigation">
+        <button class="nav-link active" data-page="dashboard"><span class="nav-icon">⌂</span> Dashboard</button>
+        <button class="nav-link" data-page="missions"><span class="nav-icon">◈</span> Missions <span class="nav-count" id="missionNavCount">0</span></button>
+        <button class="nav-link" data-page="goals"><span class="nav-icon">◎</span> Goals</button>
+        <button class="nav-link" data-page="skills"><span class="nav-icon">⌘</span> Skill tree</button>
+        <button class="nav-link" data-page="activity"><span class="nav-icon">▦</span> Activity</button>
+        <button class="nav-link" data-page="focus"><span class="nav-icon">◷</span> Focus room</button>
+        <button class="nav-link" data-page="achievements"><span class="nav-icon">✧</span> Achievements</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="sidebar-mini-card">
+          <div class="mini-card-top"><span class="live-dot"></span> YOUR CURRENT ERA</div>
+          <strong id="eraName">The Foundation Arc</strong>
+          <p>Small steps. Serious momentum.</p>
+          <div class="mini-progress"><span id="eraProgress"></span></div>
+          <small id="eraProgressText">0 missions completed</small>
+        </div>
+        <button class="nav-link quiet" data-page="settings"><span class="nav-icon">⚙</span> Settings & data</button>
+        <div class="profile-row"><div class="avatar">C</div><div><strong>Operator</strong><small>Building consistency</small></div><span class="profile-dot"></span></div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <button class="mobile-menu icon-button" id="mobileMenu" aria-label="Toggle menu">☰</button>
+        <div class="breadcrumb"><span>WORKSPACE</span><b>/</b><strong id="pageCrumb">Dashboard</strong></div>
+        <div class="topbar-actions">
+          <span class="today-label" id="todayLabel"></span>
+          <button class="icon-button" id="quickCaptureBtn" title="Quick capture" aria-label="Quick capture">＋</button>
+          <button class="primary-button small" id="topAddMission">＋ New mission</button>
+        </div>
+      </header>
+
+      <section class="page active-page" id="page-dashboard">
+        <div class="welcome-row">
+          <div><div class="eyebrow"><span class="live-dot"></span> YOUR PERSONAL PROGRESS SYSTEM</div>
+            <h1>Make today <span class="gradient-text">count.</span></h1>
+            <p class="muted">Progress isn't a mood. It's what you do, repeatedly.</p>
+          </div>
+          <div class="level-card"><div class="level-badge">✦</div><div><span class="muted tiny">YOUR JOURNEY</span><strong>LEVEL <span id="levelNumber">01</span></strong><small id="xpText">0 XP earned</small></div><div class="level-track"><span id="xpBar"></span></div></div>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card"><div class="stat-head"><span>Today's activity</span><span class="stat-icon purple">◉</span></div><div class="stat-number"><span id="todayScore">—</span><small>/10</small></div><div class="stat-foot"><span class="status-dot purple-dot"></span><span id="todayScoreCaption">Log today's effort</span></div></article>
+          <article class="stat-card"><div class="stat-head"><span>Missions completed</span><span class="stat-icon green">✓</span></div><div class="stat-number" id="completedCount">0</div><div class="stat-foot"><span class="status-dot green-dot"></span><span id="missionFoot">Every win counts</span></div></article>
+          <article class="stat-card"><div class="stat-head"><span>Active goals</span><span class="stat-icon blue">◎</span></div><div class="stat-number" id="activeGoalCount">0</div><div class="stat-foot"><span class="status-dot blue-dot"></span><span>Keep the bigger picture close</span></div></article>
+          <article class="stat-card"><div class="stat-head"><span>Current God streak</span><span class="stat-icon orange">♨</span></div><div class="stat-number"><span id="godStreakValue">0</span><small> days</small></div><div class="stat-foot"><span class="status-dot orange-dot"></span><span>9+ activity score</span></div></article>
+        </div>
+
+        <div class="content-grid">
+          <section class="panel missions-panel">
+            <div class="panel-heading"><div><div class="eyebrow">EXECUTION</div><h2>Today's missions</h2></div><button class="text-button" data-goto="missions">View all ↗</button></div>
+            <div id="todayMissionList" class="mission-list"></div>
+            <button class="add-row" id="addTodayMission">＋ Add a mission for today</button>
+          </section>
+          <section class="panel focus-panel">
+            <div class="panel-heading"><div><div class="eyebrow">DEEP WORK</div><h2>Focus room</h2></div><span class="pill">POMODORO</span></div>
+            <p class="muted small-text">One thing at a time. Give it your full attention.</p>
+            <div class="timer-ring"><div><strong id="timerDisplay">25:00</strong><span id="timerStatus">READY TO FOCUS</span></div></div>
+            <div class="timer-controls"><button class="primary-button" id="timerStart">▶ Start focus</button><button class="secondary-button" id="timerReset">↺</button></div>
+            <button class="text-button full-width" data-goto="focus">Open focus room ↗</button>
+          </section>
+        </div>
+
+        <section class="panel heatmap-panel">
+          <div class="panel-heading heatmap-heading"><div><div class="eyebrow">CONSISTENCY OVER TIME</div><h2>Your activity</h2><p class="muted small-text">Show up. Log the work. Let the squares tell the story.</p></div><button class="secondary-button" data-goto="activity">Full activity ↗</button></div>
+          <div class="heatmap-summary"><div><strong id="activeDays">0</strong><span>active days this year</span></div><div><strong id="avgScore">—</strong><span>average score</span></div><div><strong id="bestStreak">0</strong><span>best streak</span></div></div>
+          <div class="heatmap-scroll"><div class="heatmap-months" id="dashboardMonths"></div><div class="heatmap-body"><div class="weekday-labels"><span>Mon</span><span>Wed</span><span>Fri</span></div><div class="heatmap-grid" id="dashboardHeatmap"></div></div></div>
+          <div class="heatmap-legend"><span>Less</span><i class="level-0"></i><i class="level-1"></i><i class="level-2"></i><i class="level-3"></i><i class="level-4"></i><span>More</span><small>Click a day in Activity to log or review it.</small></div>
+        </section>
+
+        <div class="bottom-grid">
+          <section class="panel goals-preview"><div class="panel-heading"><div><div class="eyebrow">THE BIGGER PICTURE</div><h2>Goals in motion</h2></div><button class="text-button" data-goto="goals">All goals ↗</button></div><div id="dashboardGoals"></div></section>
+          <section class="panel upcoming-panel"><div class="panel-heading"><div><div class="eyebrow">DON'T LET IT SNEAK UP</div><h2>Coming up</h2></div><span class="stat-icon orange">⌁</span></div><div id="upcomingList"></div></section>
+        </div>
+      </section>
+
+      <section class="page" id="page-missions">
+        <div class="page-title-row"><div><div class="eyebrow">EXECUTE WITH INTENTION</div><h1>Your missions</h1><p class="muted">Turn plans into actions. One checked box at a time.</p></div><button class="primary-button" id="newMissionBtn">＋ New mission</button></div>
+        <div class="filter-row" id="missionFilters"><button class="filter-chip selected" data-filter="all">All missions</button><button class="filter-chip" data-filter="today">Today</button><button class="filter-chip" data-filter="upcoming">Upcoming</button><button class="filter-chip" data-filter="overdue">Overdue</button><button class="filter-chip" data-filter="completed">Completed</button></div>
+        <div id="missionBoard" class="mission-board"></div>
+      </section>
+
+      <section class="page" id="page-goals">
+        <div class="page-title-row"><div><div class="eyebrow">BUILD TOWARD SOMETHING</div><h1>The goal vault</h1><p class="muted">Your ambitions deserve a plan, not just a place in your head.</p></div><button class="primary-button" id="newGoalBtn">＋ New goal</button></div>
+        <div class="horizon-tabs" id="goalFilters"><button class="filter-chip selected" data-horizon="all">All horizons</button><button class="filter-chip" data-horizon="now">Now</button><button class="filter-chip" data-horizon="next">Next</button><button class="filter-chip" data-horizon="vision">Vision</button></div>
+        <div id="goalsGrid" class="goals-grid"></div>
+      </section>
+
+      <section class="page" id="page-skills">
+        <div class="page-title-row"><div><div class="eyebrow">UNLOCK YOUR POTENTIAL</div><h1>Skill tree</h1><p class="muted">Learning is a path. Make the next step visible.</p></div><button class="primary-button" id="newSkillBtn">＋ Add skill</button></div>
+        <div class="skill-banner"><div class="skill-banner-icon">⌘</div><div><span class="eyebrow">CURRENT LEARNING ARC</span><h2>Build the foundations.</h2><p class="muted">Pick a skill, define milestones, and keep moving.</p></div><div class="skill-banner-stat"><strong id="skillCount">0</strong><span>skills tracked</span></div></div>
+        <div id="skillsList" class="skills-list"></div>
+      </section>
+
+      <section class="page" id="page-activity">
+        <div class="page-title-row"><div><div class="eyebrow">CONSISTENCY IS COMPOUNDING</div><h1>Activity log</h1><p class="muted">Every square is a day you can learn from.</p></div><div class="year-control"><label for="heatmapYear">YEAR</label><select id="heatmapYear"></select></div></div>
+        <section class="panel heatmap-panel full-heatmap-panel">
+          <div class="panel-heading"><div><div class="eyebrow">YOUR YEAR IN SQUARES</div><h2 id="activityYearTitle">Activity in 2026</h2></div><button class="primary-button" id="logTodayBtn">＋ Log today</button></div>
+          <div class="heatmap-summary large-summary"><div><strong id="activityActiveDays">0</strong><span>active days</span></div><div><strong id="activityAvgScore">—</strong><span>average score</span></div><div><strong id="activityBestStreak">0</strong><span>best streak</span></div><div><strong id="activityGodDays">0</strong><span>god days (9+)</span></div></div>
+          <div class="heatmap-scroll full-heatmap-scroll"><div class="heatmap-months" id="activityMonths"></div><div class="heatmap-body"><div class="weekday-labels"><span>Mon</span><span>Wed</span><span>Fri</span></div><div class="heatmap-grid" id="activityHeatmap"></div></div></div>
+          <div class="heatmap-legend"><span>Less</span><i class="level-0"></i><i class="level-1"></i><i class="level-2"></i><i class="level-3"></i><i class="level-4"></i><span>More</span></div>
+        </section>
+        <div class="panel day-detail" id="dayDetail"><div class="empty-state"><span>▦</span><strong>Select a day</strong><p>Click a square above to inspect or edit its activity.</p></div></div>
+      </section>
+
+      <section class="page" id="page-focus">
+        <div class="page-title-row"><div><div class="eyebrow">PROTECT YOUR ATTENTION</div><h1>Focus room</h1><p class="muted">A little uninterrupted effort goes a long way.</p></div><span class="pill green-pill">DEEP WORK MODE</span></div>
+        <div class="focus-layout"><section class="panel focus-main"><div class="eyebrow">CURRENT SESSION</div><h2 id="focusMissionName">Focus on one thing.</h2><select id="focusMissionSelect" class="wide-select"><option value="">No linked mission</option></select><div class="timer-ring big-ring"><div><strong id="focusTimerDisplay">25:00</strong><span id="focusTimerStatus">READY TO FOCUS</span></div></div><div class="timer-controls"><button class="primary-button" id="focusStart">▶ Start focus</button><button class="secondary-button" id="focusReset">↺ Reset</button></div><div class="timer-presets"><button class="filter-chip selected" data-minutes="25">25 min</button><button class="filter-chip" data-minutes="45">45 min</button><button class="filter-chip" data-minutes="60">60 min</button></div></section>
+          <section class="panel"><div class="panel-heading"><div><div class="eyebrow">SHOWING UP ADDS UP</div><h2>Focus sessions</h2></div><span class="stat-icon purple">◷</span></div><div class="focus-stat"><strong id="focusSessionsToday">0</strong><span>sessions today</span></div><div class="focus-stat"><strong id="focusMinutesToday">0 min</strong><span>focused today</span></div><div class="divider"></div><p class="muted small-text">Tip: choose one concrete outcome before starting. "Study C" is vague. "Solve three pointer problems" is actionable.</p></section></div>
+      </section>
+
+      <section class="page" id="page-achievements">
+        <div class="page-title-row"><div><div class="eyebrow">PROOF OF THE WORK</div><h1>Achievements</h1><p class="muted">Permanent reminders of what you've done. A missed day can't take these away.</p></div><div class="achievement-total"><strong id="achievementCount">0</strong><span>unlocked</span></div></div>
+        <div id="achievementsGrid" class="achievements-grid"></div>
+      </section>
+
+      <section class="page" id="page-settings">
+        <div class="page-title-row"><div><div class="eyebrow">YOUR DATA, YOUR CALL</div><h1>Settings & data</h1><p class="muted">CowShell saves to this browser on this device.</p></div></div>
+        <div class="settings-grid"><section class="panel"><h2>Backup your progress</h2><p class="muted">Export your missions, goals, activity, skills, and settings to a JSON file.</p><button class="primary-button" id="exportData">↓ Export backup</button><div class="divider"></div><label class="file-label" for="importData">Import a CowShell backup</label><input type="file" id="importData" accept="application/json,.json"><p class="tiny muted">Importing replaces the current CowShell data in this browser. Export a backup first.</p></section><section class="panel danger-panel"><h2>Reset local data</h2><p class="muted">This permanently clears CowShell data saved in this browser. It won't affect exported backups.</p><button class="danger-button" id="resetData">Reset everything</button></section><section class="panel"><h2>About CowShell 2.0</h2><p class="muted">A personal progress system built around deliberate effort, visible goals, and honest reflection.</p><div class="about-line"><span>Storage</span><strong>Browser local storage</strong></div><div class="about-line"><span>Timezone</span><strong>Local device time</strong></div><div class="about-line"><span>Version</span><strong>2.0 — Starter build</strong></div></section></div>
+      </section>
+
+      <footer class="footer"><span> COWSHELL 2.0</span><span>Patience. Perseverance. Dedication.</span><span>Built one day at a time.</span></footer>
+    </main>
+  </div>
+
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-heading"><div><div class="eyebrow">MAKE IT COUNT</div><h2 id="modalTitle">New mission</h2></div><button class="icon-button" id="closeModal" aria-label="Close">×</button></div>
+      <form id="editorForm">
+        <input type="hidden" id="editId">
+        <div class="form-field"><label for="itemTitle">Title</label><input id="itemTitle" required maxlength="100" placeholder="e.g. Revise chemistry chapters 1–3"></div>
+        <div class="form-field"><label for="itemDescription">Notes (optional)</label><textarea id="itemDescription" rows="2" maxlength="400" placeholder="What does done look like?"></textarea></div>
+        <div class="form-row"><div class="form-field"><label for="itemCategory">Category</label><select id="itemCategory"><option>Academics</option><option>Programming</option><option>Health</option><option>Personal</option><option>Project</option><option>Other</option></select></div><div class="form-field"><label for="itemPriority">Priority</label><select id="itemPriority"><option value="high">High</option><option value="medium" selected>Medium</option><option value="low">Low</option></select></div></div>
+        <div class="form-row"><div class="form-field"><label for="itemDue">Deadline</label><input type="date" id="itemDue"></div><div class="form-field"><label for="itemMinutes">Time estimate (min)</label><input type="number" id="itemMinutes" min="0" max="1440" placeholder="30"></div></div>
+        <div class="form-field"><label for="itemGoal">Linked goal (optional)</label><select id="itemGoal"><option value="">No linked goal</option></select></div>
+        <div class="modal-actions"><button type="button" class="secondary-button" id="cancelModal">Cancel</button><button type="submit" class="primary-button">Save mission</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="goalModalBackdrop">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="goalModalTitle">
+      <div class="modal-heading"><div><div class="eyebrow">THINK BEYOND TODAY</div><h2 id="goalModalTitle">New goal</h2></div><button class="icon-button" id="closeGoalModal" aria-label="Close">×</button></div>
+      <form id="goalForm">
+        <input type="hidden" id="goalEditId">
+        <div class="form-field"><label for="goalTitle">Goal title</label><input id="goalTitle" required maxlength="100" placeholder="e.g. Become confident in C"></div>
+        <div class="form-field"><label for="goalWhy">Why does this matter?</label><textarea id="goalWhy" rows="2" maxlength="300" placeholder="Your reason for doing this"></textarea></div>
+        <div class="form-row"><div class="form-field"><label for="goalHorizon">Time horizon</label><select id="goalHorizon"><option value="now">Now · This week</option><option value="next" selected>Next · Weeks/months</option><option value="vision">Vision · Long-term</option></select></div><div class="form-field"><label for="goalDue">Target date</label><input type="date" id="goalDue"></div></div>
+        <div class="form-field"><label for="goalCategory">Category</label><select id="goalCategory"><option>Academics</option><option>Programming</option><option>Career</option><option>Health</option><option>Personal</option><option>Project</option><option>Other</option></select></div>
+        <div class="form-field"><label for="goalMilestones">Milestones (one per line)</label><textarea id="goalMilestones" rows="4" placeholder="Learn the basics&#10;Practise with exercises&#10;Build a project"></textarea><small class="muted tiny">You can check off milestones as you complete them.</small></div>
+        <div class="modal-actions"><button type="button" class="secondary-button" id="cancelGoalModal">Cancel</button><button type="submit" class="primary-button">Save goal</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="activityModalBackdrop">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="activityModalTitle">
+      <div class="modal-heading"><div><div class="eyebrow">HONEST DAILY CHECK-IN</div><h2 id="activityModalTitle">Log activity</h2><p class="muted small-text" id="activityModalDate"></p></div><button class="icon-button" id="closeActivityModal" aria-label="Close">×</button></div>
+      <form id="activityForm">
+        <input type="hidden" id="activityDate">
+        <div class="score-fields">
+          <div class="form-field"><label for="studyScore">Study <span>0–5</span></label><input id="studyScore" type="number" min="0" max="5" step="1" value="0" required></div>
+          <div class="form-field"><label for="sleepScore">Sleep <span>0–2</span></label><input id="sleepScore" type="number" min="0" max="2" step="1" value="0" required></div>
+          <div class="form-field"><label for="foodScore">Food <span>0–1</span></label><input id="foodScore" type="number" min="0" max="1" step="1" value="0" required></div>
+          <div class="form-field"><label for="fitnessScore">Fitness <span>0–1</span></label><input id="fitnessScore" type="number" min="0" max="1" step="1" value="0" required></div>
+          <div class="form-field"><label for="extraScore">Extra / mood <span>0–1</span></label><input id="extraScore" type="number" min="0" max="1" step="1" value="0" required></div>
+        </div>
+        <div class="score-preview"><span>DAILY SCORE</span><strong><span id="scorePreview">0</span><small>/10</small></strong></div>
+        <div class="form-field"><label for="dayReflection">Quick reflection (optional)</label><textarea id="dayReflection" rows="2" maxlength="500" placeholder="What went well? What will you improve tomorrow?"></textarea></div>
+        <div class="modal-actions"><button type="button" class="secondary-button" id="cancelActivityModal">Cancel</button><button type="submit" class="primary-button">Save activity</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
